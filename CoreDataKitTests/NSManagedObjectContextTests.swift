@@ -48,7 +48,7 @@ class NSManagedObjectContextTests: TestCase {
         XCTAssertEqual(coreDataStack.rootContext.countForFetchRequest(countFRq, error: nil), 0, "Unexpected employee entities")
 
         coreDataStack.rootContext.createChildContext().performBlock({ (context) -> CommitAction in
-            let employee: Employee = NSEntityDescription.insertNewObjectForEntityForName("Employee", inManagedObjectContext: context) as Employee
+            let employee: Employee = NSEntityDescription.insertNewObjectForEntityForName("Employee", inManagedObjectContext: context) as! Employee
             employee.name = "Mike Ross"
 
             return .SaveToPersistentStore
@@ -83,7 +83,7 @@ class NSManagedObjectContextTests: TestCase {
 // MARK: Obtaining permanent IDs
 
     func testObtainPermanentIDsForInsertedObjects() {
-        let employee: Employee = NSEntityDescription.insertNewObjectForEntityForName("Employee", inManagedObjectContext: coreDataStack.rootContext) as Employee
+        let employee: Employee = NSEntityDescription.insertNewObjectForEntityForName("Employee", inManagedObjectContext: coreDataStack.rootContext) as! Employee
         employee.name = "Harvey Specter"
 
         XCTAssertTrue(employee.objectID.temporaryID, "Object ID must be temporary")
@@ -97,7 +97,7 @@ class NSManagedObjectContextTests: TestCase {
     }
 
     private func testContextObtainsPermanentIDs(context: NSManagedObjectContext) {
-        let employee: Employee = NSEntityDescription.insertNewObjectForEntityForName("Employee", inManagedObjectContext: context) as Employee
+        let employee: Employee = NSEntityDescription.insertNewObjectForEntityForName("Employee", inManagedObjectContext: context) as! Employee
         employee.name = "Harvey Specter"
 
         XCTAssertTrue(employee.objectID.temporaryID, "Object ID must be temporary")

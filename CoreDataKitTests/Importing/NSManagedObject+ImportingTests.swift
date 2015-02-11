@@ -12,15 +12,15 @@ import CoreDataKit
 
 class NSManagedObjectTests: TestCase {
     func testImportDictionary() {
-        if let jsonArray = loadJSONFile("Employees")? as? [[String: AnyObject]] {
+        if let jsonArray = loadJSONFile("Employees") as? [[String: AnyObject]] {
             for jsonObject in jsonArray {
                 switch coreDataStack.rootContext.importEntity(EmployeeImportable.self, dictionary: jsonObject) {
                 case .Failure:
                     XCTFail("Unexpected error")
 
                 case let .Success(boxedImportResult):
-                    XCTAssertEqual(boxedImportResult().name, jsonObject["checkName"] as String, "Unexpected name")
-                    XCTAssertEqual(boxedImportResult().age, jsonObject["checkAge"] as Int, "Unexpected age")
+                    XCTAssertEqual(boxedImportResult().name, jsonObject["checkName"] as! String, "Unexpected name")
+                    XCTAssertEqual(boxedImportResult().age, jsonObject["checkAge"] as! Int, "Unexpected age")
                 }
             }
         } else {
@@ -40,7 +40,7 @@ class NSManagedObjectTests: TestCase {
             boxedObject().haircolor = "Yellow"
         }
 
-        if let jsonObject = loadJSONFile("EmployeesWithNull")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesWithNull") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeImportable.self, dictionary: jsonObject) {
             case .Failure:
                 XCTFail("Unexpected error")
@@ -67,7 +67,7 @@ class NSManagedObjectTests: TestCase {
             boxedObject().haircolor = "Yellow"
         }
 
-        if let jsonObject = loadJSONFile("EmployeesWithOmittedField")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesWithOmittedField") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeImportable.self, dictionary: jsonObject) {
             case .Failure:
                 XCTFail("Unexpected error")
@@ -87,7 +87,7 @@ class NSManagedObjectTests: TestCase {
     }
 
     func testImportWithNestedRelation() {
-        if let jsonObject = loadJSONFile("EmployeesNestedRelation")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesNestedRelation") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeWithRelations.self, dictionary: jsonObject) {
             case .Failure:
                 XCTFail("Unexpected error")
@@ -118,7 +118,7 @@ class NSManagedObjectTests: TestCase {
             boxedObject().color = "brown"
         }
 
-        if let jsonObject = loadJSONFile("EmployeesReferencedRelation")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesReferencedRelation") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeWithRelations.self, dictionary: jsonObject) {
             case .Failure:
                 XCTFail("Unexpected error")
@@ -139,7 +139,7 @@ class NSManagedObjectTests: TestCase {
     }
 
     func testImportWithUnexistingReferencedRelation() {
-        if let jsonObject = loadJSONFile("EmployeesReferencedRelation")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesReferencedRelation") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeWithRelations.self, dictionary: jsonObject) {
             case .Failure:
                 XCTFail("Unexpected error")
@@ -160,7 +160,7 @@ class NSManagedObjectTests: TestCase {
     }
 
     func testImportNestedEmbeddingRelation() {
-        if let jsonObject = loadJSONFile("EmployeesNestedEmbeddingRelation")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesNestedEmbeddingRelation") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeWithRelationEmbedding.self, dictionary: jsonObject) {
             case let .Failure(error):
                 XCTFail("Unexpected error \(error)")
@@ -179,7 +179,7 @@ class NSManagedObjectTests: TestCase {
         let count = coreDataStack.rootContext.find(Salary.self).value()?.count ?? -1
         XCTAssertEqual(count, 0, "Salary on start incorrect")
 
-        if let jsonObject = loadJSONFile("EmployeesNestedEmbeddingRelation")? as? [String: AnyObject] {
+        if let jsonObject = loadJSONFile("EmployeesNestedEmbeddingRelation") as? [String: AnyObject] {
             switch coreDataStack.rootContext.importEntity(EmployeeWithRelationEmbedding.self, dictionary: jsonObject) {
             case let .Failure(error):
                 XCTFail("Unexpected error \(error)")

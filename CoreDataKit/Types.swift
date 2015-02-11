@@ -11,14 +11,14 @@ import CoreData
 /// The result type used for nearly all failable operations
 public enum Result<T> {
     /// Indicated success of the operation and contains a boxed result value
-    case Success(@autoclosure () -> T)
+    case Success(() -> T)
 
     /// Indicates failure of the operation and contains a boxes error value
     case Failure(NSError)
 
     /// Initialize with a success value, boxes it for you
     internal init(_ value: T) {
-        self = .Success(value)
+        self = .Success({ return value })
     }
 
     /// Initialize with a error value, boxes it for you
@@ -74,7 +74,7 @@ public enum Result<T> {
     public func map<U>(f: T -> U) -> Result<U> {
         switch self {
         case let .Success(x):
-            return .Success(f(x()))
+            return .Success({ return f(x()) })
 
         case let .Failure(x):
             return .Failure(x)

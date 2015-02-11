@@ -32,10 +32,16 @@ class ManagedObjectObserverTests: TestCase {
                 calledExpectation.fulfill()
             }
 
-            self.coreDataStack.performBlockOnBackgroundContext { context in
+            self.coreDataStack.performBlockOnBackgroundContext({ context in
                 observable.name = "Dana J. Scott"
                 return .SaveToPersistentStore
-            }
+                }
+                , completionHandler: nil)
+            
+//            self.coreDataStack.performBlockOnBackgroundContext { context in
+//                observable.name = "Dana J. Scott"
+//                return .SaveToPersistentStore
+//            }
         })
 
         waitForExpectationsWithTimeout(3, handler: nil)
@@ -61,10 +67,11 @@ class ManagedObjectObserverTests: TestCase {
                     calledExpectation.fulfill()
                 }
 
-                self.coreDataStack.performBlockOnBackgroundContext { context in
+                self.coreDataStack.performBlockOnBackgroundContext({ context in
                     observable.name = "Dana J. Scott"
                     return .SaveToPersistentStore
-                }
+                    }
+                    , completionHandler: nil)
         })
         
         waitForExpectationsWithTimeout(3, handler: nil)
